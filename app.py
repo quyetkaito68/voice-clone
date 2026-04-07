@@ -37,9 +37,9 @@ print("Model ready!", flush=True)
 
 def generate_voice(text, voice_file, language, speed, temperature):
     if not text or not text.strip():
-        raise gr.Error("Vui long nhap noi dung can doc!")
+        raise gr.Error("Vui lòng nhập nội dung cần đọc!")
     if voice_file is None:
-        raise gr.Error("Vui long upload file giong mau!")
+        raise gr.Error("Vui lòng upload file giọng mẫu!")
 
     gpt_cond_latent, speaker_embedding = model.get_conditioning_latents(
         audio_path=voice_file,
@@ -98,19 +98,19 @@ footer { display: none !important; }
 with gr.Blocks() as app:
 
     gr.HTML('<div class="main-title"><h1>Voice Clone</h1></div>')
-    gr.HTML('<div class="subtitle">Clone giong noi tieng Viet voi AI — Powered by viXTTS</div>')
+    gr.HTML('<div class="subtitle">Clone giọng nói tiếng Việt với AI — Powered by viXTTS</div>')
 
     with gr.Row(equal_height=True):
         # --- Left column: inputs ---
         with gr.Column(scale=3):
             text_input = gr.Textbox(
-                label="Noi dung can doc",
-                placeholder="Nhap van ban tieng Viet tai day...",
+                label="Nội dung cần đọc",
+                placeholder="Nhập văn bản tiếng Việt tại đây...",
                 lines=6,
                 max_lines=20,
             )
             voice_input = gr.Audio(
-                label="Giong mau (WAV, 6-30 giay)",
+                label="Giọng mẫu (WAV, 6-30 giây)",
                 type="filepath",
                 sources=["upload", "microphone"],
             )
@@ -118,7 +118,7 @@ with gr.Blocks() as app:
             with gr.Row():
                 lang_input = gr.Dropdown(
                     choices=[
-                        ("Tieng Viet", "vi"),
+                        ("Tiếng Việt", "vi"),
                         ("English", "en"),
                         ("Chinese", "zh-cn"),
                         ("Japanese", "ja"),
@@ -138,14 +138,14 @@ with gr.Blocks() as app:
                         ("Hindi", "hi"),
                     ],
                     value="vi",
-                    label="Ngon ngu",
+                    label="Ngôn ngữ",
                 )
                 speed_input = gr.Slider(
                     minimum=0.5,
                     maximum=2.0,
                     value=1.0,
                     step=0.1,
-                    label="Toc do",
+                    label="Tốc độ",
                 )
                 temp_input = gr.Slider(
                     minimum=0.1,
@@ -156,7 +156,7 @@ with gr.Blocks() as app:
                 )
 
             generate_btn = gr.Button(
-                "Tao giong noi",
+                "Tạo giọng nói",
                 variant="primary",
                 size="lg",
             )
@@ -164,21 +164,21 @@ with gr.Blocks() as app:
         # --- Right column: output ---
         with gr.Column(scale=2):
             audio_output = gr.Audio(
-                label="Ket qua",
+                label="Kết quả",
                 type="filepath",
                 interactive=False,
             )
             download_output = gr.File(
-                label="Tai ve",
+                label="Tải về",
             )
 
             gr.Markdown(
                 """
-                ### Huong dan
-                1. **Upload giong mau** — file WAV/MP3, 6-30 giay, giong ro rang
-                2. **Nhap noi dung** — cau dai tren 10 tu cho ket qua tot nhat
-                3. **Bam "Tao giong noi"** — doi vai phut (CPU) hoac vai giay (GPU)
-                4. **Nghe thu & tai ve** ket qua
+                ### Hướng dẫn
+                1. **Upload giọng mẫu** — file WAV/MP3, 6-30 giây, giọng rõ ràng
+                2. **Nhập nội dung** — câu dài trên 10 từ cho kết quả tốt nhất
+                3. **Bấm "Tạo giọng nói"** — đợi vài phút (CPU) hoặc vài giây (GPU)
+                4. **Nghe thử & tải về** kết quả
                 """
             )
 
